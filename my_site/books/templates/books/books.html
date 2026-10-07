@@ -1,0 +1,71 @@
+{% extends "base.html" %}
+
+{% block title %}
+My Books
+{% endblock %}
+
+{% block content %}
+
+<h1>{{ page_title }}</h1>
+
+{% if user.is_authenticated %}
+    <p>Welcome, {{ user.username }}!</p>
+    <a href="{% url 'logout' %}">Logout</a>
+{% else %}
+    <a href="{% url 'login' %}">Login</a>
+    |
+    <a href="{% url 'register' %}">Register</a>
+{% endif %}
+
+<form method="GET">
+    <input
+        type="text"
+        name="q"
+        value="{{ query }}"
+        placeholder="Search books..."
+    >
+    <button type="submit">Search</button>
+</form>
+
+<ul>
+    {% for book in books %}
+        <li>
+            <a href="{% url 'book_detail' book.id %}">
+                {{ book.title }}
+            </a>
+
+            - {{ book.author }} - {{ book.year }} - ${{ book.price }}
+
+            {% if perms.books.change_book %}
+                | <a href="{% url 'edit_book' book.id %}">Edit</a>
+            {% endif %}
+
+            {% if perms.books.delete_book %}
+                | <a href="{% url 'delete_book' book.id %}">Delete</a>
+            {% endif %}
+        </li>
+
+    {% empty %}
+        <p>No books found.</p>
+    {% endfor %}
+</ul>
+
+<div>
+    {% if books.has_previous %}
+        <a href="?page={{ books.previous_page_number }}&q={{ query }}">
+            Previous
+        </a>
+    {% endif %}
+
+    <span>
+        Page {{ books.number }} of {{ books.paginator.num_pages }}
+    </span>
+
+    {% if books.has_next %}
+        <a href="?page={{ books.next_page_number }}&q={{ query }}">
+            Next
+        </a>
+    {% endif %}
+</div>
+
+{% endblock %}

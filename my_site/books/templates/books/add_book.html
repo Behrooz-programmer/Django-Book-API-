@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% block title %}
+Add Book
+{% endblock %}
+
+{% block content %}
+
+<h1>Add a New Book</h1>
+
+{% if error %}
+    <p>{{ error }}</p>
+{% endif %}
+
+<form method="POST">
+    {% csrf_token %}
+
+    <label>Title:</label>
+    <input type="text" name="title">
+
+    <br><br>
+
+    <label>Author:</label>
+    <input type="text" name="author">
+
+    <br><br>
+
+    <label>Year:</label>
+    <input type="number" name="year">
+
+    <br><br>
+
+    <label>Price:</label>
+    <input type="number" name="price">
+
+    <br><br>
+
+    <button type="submit">Add Book</button>
+</form>
+
+{% endblock %}

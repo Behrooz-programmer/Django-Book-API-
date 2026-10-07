@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+
+{% block title %}
+Form Test
+{% endblock %}
+
+{% block content %}
+
+<h1>Book Form</h1>
+
+<form method="POST">
+    {% csrf_token %}
+
+    {% if form.errors %}
+    <p>Please correct the errors below.</p>
+
+    {% endif %}
+
+    {{ form.as_p }}
+
+    <button type="submit">Submit</button>
+</form>
+
+{% endblock %}
